@@ -37,4 +37,4 @@ def test():
 
 if __name__ == "__main__":
     test()
-    print(main(utils.file_handler.get_problem_input("01", 1))) # 73211
+    print(main(utils.file_handler.get_puzzle_input("01"))) # 73211

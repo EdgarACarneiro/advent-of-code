@@ -60,4 +60,4 @@ def test():
 
 if __name__ == "__main__":
     test()
-    print(main(utils.file_handler.get_problem_input("01", 2))) # 213958
+    print(main(utils.file_handler.get_puzzle_input("01"))) # 213958
