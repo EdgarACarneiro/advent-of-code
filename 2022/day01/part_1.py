@@ -1,6 +1,7 @@
 import utils.file_handler
 
-def main(input: list[str]) -> str:
+
+def main(input: list[str]) -> int:
     elfs_calories = [0]
 
     elf_num = 0
@@ -16,8 +17,9 @@ def main(input: list[str]) -> str:
 
     return max(elfs_calories)
 
+
 def test():
-    test_input ="""
+    test_input = """
 1000
 2000
 3000
@@ -35,6 +37,7 @@ def test():
 """
     assert main(test_input.split("\n")) == 24000
 
+
 if __name__ == "__main__":
     test()
-    print(main(utils.file_handler.get_puzzle_input("01"))) # 73211
+    print(main(utils.file_handler.get_puzzle_input("01")))

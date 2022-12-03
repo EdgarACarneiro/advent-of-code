@@ -1,5 +1,6 @@
 import utils.file_handler
 
+
 def get_sum_max_3(input: list[int]) -> int:
     """
     Get the sum of the maximum 3 values in the provided string list
@@ -23,7 +24,8 @@ def get_sum_max_3(input: list[int]) -> int:
 
     return sum([max1, max2, max3])
 
-def main(input: list[str]) -> str:
+
+def main(input: list[str]) -> int:
     elfs_calories = [0]
 
     elf_num = 0
@@ -39,8 +41,9 @@ def main(input: list[str]) -> str:
 
     return get_sum_max_3(elfs_calories)
 
+
 def test():
-    test_input ="""
+    test_input = """
 1000
 2000
 3000
@@ -58,6 +61,7 @@ def test():
 """
     assert main(test_input.split("\n")) == 45000
 
+
 if __name__ == "__main__":
     test()
-    print(main(utils.file_handler.get_puzzle_input("01"))) # 213958
+    print(main(utils.file_handler.get_puzzle_input("01")))

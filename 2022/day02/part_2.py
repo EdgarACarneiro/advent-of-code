@@ -1,45 +1,41 @@
 import utils.file_handler
 import enum
 
+
 class Choice(enum.Enum):
     ROCK = "A"
     PAPER = "B"
-    SCISSORS  = "C"
+    SCISSORS = "C"
+
 
 class Result(enum.Enum):
     LOSS = "X"
     DRAW = "Y"
-    WIN  = "Z"
+    WIN = "Z"
 
-CHOICE_POINTS = {
-    Choice.ROCK: 1,
-    Choice.PAPER: 2,
-    Choice.SCISSORS: 3
-}
 
-RESULT_POINTS = {
-    Result.LOSS: 0,
-    Result.DRAW: 3,
-    Result.WIN: 6
-}
+CHOICE_POINTS = {Choice.ROCK: 1, Choice.PAPER: 2, Choice.SCISSORS: 3}
+
+RESULT_POINTS = {Result.LOSS: 0, Result.DRAW: 3, Result.WIN: 6}
 
 POSSIBLE_OUTCOMES = {
     Choice.ROCK: {
         Choice.ROCK: Result.DRAW,
         Choice.PAPER: Result.WIN,
-        Choice.SCISSORS: Result.LOSS
+        Choice.SCISSORS: Result.LOSS,
     },
     Choice.PAPER: {
         Choice.ROCK: Result.LOSS,
         Choice.PAPER: Result.DRAW,
-        Choice.SCISSORS: Result.WIN
+        Choice.SCISSORS: Result.WIN,
     },
     Choice.SCISSORS: {
         Choice.ROCK: Result.WIN,
         Choice.PAPER: Result.LOSS,
-        Choice.SCISSORS: Result.DRAW
-    }
+        Choice.SCISSORS: Result.DRAW,
+    },
 }
+
 
 def get_result(line: str):
     enemy_choice, desired_res = line.split(" ")
@@ -54,18 +50,19 @@ def get_result(line: str):
 
     raise RuntimeError(f"Unknown input line was given {line}")
 
-def main(input: list[str]) -> str:
-    return sum(
-        get_result(line.strip()) for line in input if len(line.strip())
-    )
+
+def main(input: list[str]) -> int:
+    return sum(get_result(line.strip()) for line in input if len(line.strip()))
+
 
 def test():
-    test_input ="""A Y
+    test_input = """A Y
 B X
 C Z
 """
     assert main(test_input.split("\n")) == 12
 
+
 if __name__ == "__main__":
     test()
-    print(main(utils.file_handler.get_puzzle_input("02"))) # 11618
+    print(main(utils.file_handler.get_puzzle_input("02")))
