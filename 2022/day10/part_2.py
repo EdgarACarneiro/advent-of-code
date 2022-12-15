@@ -1,8 +1,7 @@
 import utils.file_handler
 import abc
 
-SIGNAL_STRENGTH_START = 20
-SIGNAL_STRENGTH_LOOP = 40
+CRT_LOOP = 40
 
 
 class Instruction(abc.ABC):
@@ -44,11 +43,16 @@ def parse_instruction(instruction: str) -> Instruction:
             raise Exception(f"Unknown instruction {unknown}")
 
 
-def main(input: list[str]) -> int:
+def get_sprite_positions(idx: int):
+    return (idx - 1, idx, idx + 1)
 
-    cycle: int = 1
-    total_score: int = 0
+
+def main(input: list[str]) -> list[str]:
+
+    res: list[str] = []
+    crt_row: str = ""
     signal_score: int = 1
+    cycle: int = 0
     current_idx: int = 0
     current_instruction: Instruction = parse_instruction(input[0])
 
@@ -62,21 +66,41 @@ def main(input: list[str]) -> int:
             # We processed all instructions and there isn't any instruction
             # being processed
             if current_idx >= len(input):
-                return total_score
+                # Append the current crt_row
+                res.append(crt_row)
+                return res
 
             current_instruction = parse_instruction(input[current_idx])
 
-        if (cycle - SIGNAL_STRENGTH_START) % SIGNAL_STRENGTH_LOOP == 0:
-            total_score += signal_score * cycle
+        if cycle % CRT_LOOP == 0:
+            res.append(crt_row)
+            crt_row = ""
+
+        # Update the CRT row
+        crt_row += (
+            "█" if (cycle % CRT_LOOP) in get_sprite_positions(signal_score) else " "
+        )
 
         current_instruction.tick()
         cycle += 1
 
 
 def test():
-    assert main(utils.file_handler.get_puzzle_input("10", filename="test")) == 13140
+    assert "".join(
+        main(utils.file_handler.get_puzzle_input("10", filename="test"))
+    ) == "".join(
+        [
+            "██  ██  ██  ██  ██  ██  ██  ██  ██  ██  ",
+            "███   ███   ███   ███   ███   ███   ███ ",
+            "████    ████    ████    ████    ████    ",
+            "█████     █████     █████     █████     ",
+            "██████      ██████      ██████      ████",
+            "███████       ███████       ███████     ",
+        ]
+    )
 
 
 if __name__ == "__main__":
     test()
-    print(main(utils.file_handler.get_puzzle_input("10")))
+    for row in main(utils.file_handler.get_puzzle_input("10")):
+        print(row)
