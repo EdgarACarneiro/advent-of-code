@@ -35,6 +35,13 @@ class Sensor:
     def in_range(self, pos: tuple[int, int]) -> bool:
         return abs(pos[0] - self.x) + abs(pos[1] - self.y) <= self.range
 
+    def get_range_in_row(self, row: int) -> tuple[int, int]:
+        y_diff = abs(self.y - row)
+        old_range = self.get_x_range()
+        new_range = (old_range[0] + y_diff, old_range[1] - y_diff + 1)
+
+        return (0, 0) if new_range[0] >= new_range[1] else new_range
+
     def __repr__(self) -> str:
         return f"({self.x}, {self.y}, {self.range})"
 
@@ -80,17 +87,16 @@ def main(input: list[str], row: int) -> int:
         max_x = max(max_x, b.x, s_range[1])
 
     res = 0
+    occupied_pos = set(range(*sensors[0].get_range_in_row(row)))
 
-    for x in range(min_x, max_x + 1):
-        if (x, row) in beacons:
-            continue
+    for i in range(1, len(sensors)):
+        occupied_pos = occupied_pos.union(range(*sensors[i].get_range_in_row(row)))
 
-        for s in sensors:
-            if s.in_range((x, row)):
-                res += 1
-                break
+    for beacon in beacons:
+        if beacon[1] == row:
+            occupied_pos = occupied_pos - set([beacon[0]])
 
-    return res
+    return len(occupied_pos)
 
 
 def test():
